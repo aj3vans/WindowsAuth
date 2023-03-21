@@ -1,0 +1,90 @@
+﻿@model WindowsAuth.ViewModels.HomeIndexVm
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    var isAdminResult = await AuthorizationService
+    .AuthorizeAsync(User, "IsAdmin");
+
+    var canEditUsersResult = await AuthorizationService
+    .AuthorizeAsync(User, "CanEditUsers");   
+}
+
+<div class="text-center">
+    <h1 class="display-4">Manage Users</h1>
+</div>
+
+@if (Model.Users != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>sAMAccount Name</th>
+                <th>Name</th>
+                <th>Permissions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {                
+                <tr>
+                    @{
+                        var isAccountOwnerResult = await AuthorizationService
+                            .AuthorizeAsync(User, user, "IsAccountOwner");
+                    }
+                    <td>@user.UserId</td>
+                    <td>@user.sAMAccountName</td>
+                    <td>
+                        @if (canEditUsersResult.Succeeded || isAccountOwnerResult.Succeeded)
+                            {
+                            <a asp-controller="User" asp-action="Edit" asp-route-userid="@user.UserId">
+                            @user.Name
+                            </a>
+                        }
+                        else
+                        {
+                            @user.Name
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Permission" asp-action="Manage" asp-route-userid="@user.UserId">
+                            Manage
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<hr/>
+
+<div class="text-center">
+    <h2 class="display-4">My Permissions</h2>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Identity Name</th>
+            <th>Claim Type</th>
+            <th>Claim Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var identity in User.Identities)
+        {
+            @foreach (var claim in identity.Claims)
+            {
+                <tr>
+                    <td>@identity.AuthenticationType</td>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

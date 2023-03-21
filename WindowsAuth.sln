@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsAuth", "WindowsAuth.csproj", "{A59A80C1-7D8A-4057-9B6F-2C2952AAC09E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A59A80C1-7D8A-4057-9B6F-2C2952AAC09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A59A80C1-7D8A-4057-9B6F-2C2952AAC09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A59A80C1-7D8A-4057-9B6F-2C2952AAC09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A59A80C1-7D8A-4057-9B6F-2C2952AAC09E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F8C77C1-439B-4234-9F50-12C3A7E22BEC}
+	EndGlobalSection
+EndGlobal

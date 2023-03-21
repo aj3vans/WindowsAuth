@@ -1,0 +1,43 @@
+﻿@model WindowsAuth.ViewModels.PermissionManageVm
+@{
+    ViewData["Title"] = "Manage Manage";
+}
+
+@if (Model.User != null && Model.UserPermissions != null)
+{
+    <div class="text-center">
+        <h1 class="display-4">Manage @Model.User.Name</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>
+                    <a asp-controller="User" asp-action="Add" asp-route-id="@Model.User.UserId">
+                        Add
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userPermission in Model.UserPermissions)
+            {
+                <tr>
+                    <td>@userPermission.Type</td>
+                    <td>@userPermission.Name</td>
+                    <td>
+                        <ul class="list-inline">
+                            <li>
+                                <a asp-controller="User" asp-action="Remove" asp-route-id="@userPermission.PermissionId">
+                                    Remove
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
