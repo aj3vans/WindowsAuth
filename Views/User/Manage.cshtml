@@ -10,12 +10,34 @@
     .AuthorizeAsync(User, "IsAdmin");
 
     var canEditUsersResult = await AuthorizationService
-    .AuthorizeAsync(User, "CanEditUsers");   
+    .AuthorizeAsync(User, "CanEditUsers");
+
+    var isOlderThan = await AuthorizationService
+    .AuthorizeAsync(User, "IsOlderThan");
+
+    var claim_UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId");
 }
 
 <div class="text-center">
     <h1 class="display-4">Manage Users</h1>
 </div>
+
+@if (User.Identity != null && claim_UserId != null)
+{
+    <p>
+        Current identity is <b>@User.Identity.Name</b> with an ID of <b>@claim_UserId.Value</b>
+        <a asp-controller="User" asp-action="Check">
+            Check user age!
+        </a>
+    </p>
+}
+
+@if (isOlderThan.Succeeded)
+{
+    <p class="lead">
+        You are older than 38.
+    </p>
+}
 
 @if (Model.Users != null)
 {
@@ -25,24 +47,25 @@
                 <th>User Id</th>
                 <th>sAMAccount Name</th>
                 <th>Name</th>
+                <th>DoB</th>
                 <th>Permissions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model.Users)
-            {                
+            {
                 <tr>
                     @{
                         var isAccountOwnerResult = await AuthorizationService
-                            .AuthorizeAsync(User, user, "IsAccountOwner");
+                        .AuthorizeAsync(User, user, "IsAccountOwner");
                     }
                     <td>@user.UserId</td>
                     <td>@user.sAMAccountName</td>
                     <td>
                         @if (canEditUsersResult.Succeeded || isAccountOwnerResult.Succeeded)
-                            {
+                        {
                             <a asp-controller="User" asp-action="Edit" asp-route-userid="@user.UserId">
-                            @user.Name
+                                @user.Name
                             </a>
                         }
                         else
@@ -50,6 +73,7 @@
                             @user.Name
                         }
                     </td>
+                    <td>@user.DateOfBirth.ToShortDateString()</td>
                     <td>
                         <a asp-controller="Permission" asp-action="Manage" asp-route-userid="@user.UserId">
                             Manage
@@ -60,7 +84,7 @@
         </tbody>
     </table>
 }
-<hr/>
+<hr />
 
 <div class="text-center">
     <h2 class="display-4">My Permissions</h2>

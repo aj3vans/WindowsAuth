@@ -50,6 +50,7 @@ namespace WindowsAuth
 
                 identity.AddClaim(new Claim("UserId", user.UserId.ToString()));
                 identity.AddClaim(new Claim("Username", sAMAccountName));
+                identity.AddClaim(new Claim("DateOfBirth", user.DateOfBirth.ToShortDateString()));
 
                 // add permissions 
                 foreach (var userPermission in userPermissions)

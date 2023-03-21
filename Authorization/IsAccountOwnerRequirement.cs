@@ -3,12 +3,11 @@
 namespace WindowsAuth.Authorization
 {
     public class IsAccountOwnerRequirement : IAuthorizationRequirement
-    {
-        //public int UserId { get; set; }
+    {        
 
-        public IsAccountOwnerRequirement()//)int userId)
+        public IsAccountOwnerRequirement()
         {
-            //this.UserId = userId;
+          
         }
     }
 }

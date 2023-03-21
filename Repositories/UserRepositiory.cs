@@ -58,6 +58,7 @@ namespace WindowsAuth.Repositories
                             UserId = reader.GetInt32("UserId"), 
                             sAMAccountName = reader.GetString("sAMAccountName"),  
                             Name = reader.GetString("Name"),
+                            DateOfBirth = reader.GetDateTime("DateOfBirth")
                         });
                     }
                 }
@@ -80,6 +81,7 @@ namespace WindowsAuth.Repositories
                         user.UserId = reader.GetInt32("UserId");
                         user.sAMAccountName = reader.GetString("sAMAccountName");
                         user.Name = reader.GetString("Name");
+                        user.DateOfBirth = reader.GetDateTime("DateOfBirth");
                     }                   
                 }
             }

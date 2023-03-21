@@ -34,10 +34,13 @@ builder.Services.AddAuthorization(options => {
     // Add required claims 
     options.AddPolicy("CanEditUsers", options => options.RequireClaim("Permission", "User.Edit"));
     options.AddPolicy("IsAccountOwner", options => options.AddRequirements(new IsAccountOwnerRequirement()));
+    options.AddPolicy("IsOlderThan", options => options.AddRequirements(new MustBeOlderThanRequirement(38)));
 });
 
-// Add custom authorization handlers and requirements 
+// Add custom authorization handlers
 builder.Services.AddSingleton<IAuthorizationHandler, IsAccountOwnerAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, MustBeOlderThanAuthorizationHandler>();
+
 
 // Add custom claims to the windows authenticated user 
 builder.Services.AddScoped<IClaimsTransformation, ClaimsTransformer>();

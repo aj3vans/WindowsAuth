@@ -12,13 +12,14 @@ namespace WindowsAuth.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
-
         private readonly IUserRepository _userRepository;
+        private readonly IAuthorizationService _authorizationService; // inject authorization service to access policies in action methods - see check method  
 
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository, IAuthorizationService authorizationService)
         {
             _logger = logger;
-            _userRepository = userRepository;   
+            _userRepository = userRepository;
+            _authorizationService = authorizationService;
         }
         //--
 
@@ -32,6 +33,22 @@ namespace WindowsAuth.Controllers
                                  
             return View(viewModel);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("Check")]
+        public async Task<IActionResult> Check()
+        {            
+            var result = await _authorizationService
+                .AuthorizeAsync(User, "IsOlderThan");
+
+            if (result.Succeeded) 
+            {
+                return Content("You are older than 38.");
+            }
+            return Content("You do not have access.");
+        }
+        //------------------------------------------------
         //------------------------------------------------
         //
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

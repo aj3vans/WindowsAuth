@@ -5,7 +5,8 @@ using WindowsAuth.Models;
 
 namespace WindowsAuth.Authorization
 {
-    public class IsAccountOwnerAuthorizationHandler : AuthorizationHandler<IsAccountOwnerRequirement, User>
+    public class IsAccountOwnerAuthorizationHandler : 
+        AuthorizationHandler<IsAccountOwnerRequirement, User>
     {
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
@@ -18,19 +19,7 @@ namespace WindowsAuth.Authorization
             {
                 context.Succeed(requirement);
             }
-
-            //if (!context.User.HasClaim(c => c.Type.Equals("User.Edit")))
-            //{
-            //    return Task.CompletedTask;
-            //}
-
-            
-
-            //if (userId.Equals(requirement.UserId))
-            //{
-            //    context.Succeed(requirement);
-            //}
-            
+                                  
             return Task.CompletedTask;
         }
     }
