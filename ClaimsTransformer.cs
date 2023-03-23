@@ -31,9 +31,8 @@ namespace WindowsAuth
         */
         public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-            // get current claims identity 
-            var identity = (ClaimsIdentity)principal.Clone().Identity;
-            var sAMAccountName = identity.Name.Split(@"\")[1];
+            // get current identity name
+            var sAMAccountName = principal.Identity.Name.Split(@"\")[1];
 
             if (_cache.TryGetValue(sAMAccountName, out ClaimsIdentity claimsIdentity))
             {
@@ -44,6 +43,9 @@ namespace WindowsAuth
             }
             else
             {
+                // clone the current claims identity
+                var identity = (ClaimsIdentity)principal.Clone().Identity;
+                
                 // get  user | user permissions
                 var user = _userRepository.GetBysAMAccountName(sAMAccountName);
                 var userPermissions = _userPermissionRepository.GetBysAMAccountName(sAMAccountName);
